@@ -1,4 +1,3 @@
-import React from "react";
 import CeramahPoster from "../../assets/img.png";
 import { Link } from "react-router-dom";
 
