@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import Default from "../layouts/default";
 import Dashboard from "../layouts/dashboard";
 import Login from "../pages/auth/login";
@@ -9,7 +9,7 @@ import Event from "../pages/Common/event";
 import EventDetail from "../pages/Common/event-detail";
 import Payment from "../pages/Common/payment";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Default />,
