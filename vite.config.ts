@@ -3,6 +3,6 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/tiket-online/",
+  // base: "/tiket-online/",
   plugins: [react()],
 });

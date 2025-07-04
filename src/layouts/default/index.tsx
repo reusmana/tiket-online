@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 
 const Default = () => {
   return (
-    <div className="relative flex flex-col w-full h-full min-h-screen overflow-hidden">
+    <div className="relative flex flex-col w-full min-h-screen bg-[#F5F5F5]">
       <Navbar />
       <section className="relative flex flex-col">
         <div className="flex flex-col items-center justify-center">

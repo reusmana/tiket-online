@@ -1,9 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import CardsEvent from "../../components/CardEvents/Index";
+import Poster from "../../assets/posters/Poster 1 1.png";
+import Badge from "../../components/ui/Badge";
+import Input from "../../components/ui/Input";
+import { cn } from "../../lib/utils";
 const Event = () => {
   const loc = useLocation();
+  const [selectedEvent, setSelectedEvent] = useState<string>("upcoming");
+
+  const handleEventClick = (event: string) => {
+    setSelectedEvent(event);
+  };
   useEffect(() => {
     const q = loc.search.split("=")[1];
     console.log(q);
@@ -16,33 +25,55 @@ const Event = () => {
           Semua event yang diselenggarakan oleh Menata Hati!
         </p>
         <form className="relative flex items-center justify-center w-full max-w-xl mt-4">
-          <input
+          <Input
             type="text"
             name="search"
             placeholder="Cari Event..."
+            id="search"
             className="w-full px-2 py-2 mx-auto text-xl border rounded-md focus:outline-slate-600"
           />
           <span className="absolute text-lg right-2 text-slate-600">
             <FaSearch />
           </span>
         </form>
+        <div className="grid w-full max-w-xl grid-cols-2 gap-6 mt-2 ">
+          <button
+            onClick={() => handleEventClick("upcoming")}
+            className={cn(
+              "flex items-center justify-center w-full py-2 text-white rounded-lg bg-primary",
+              selectedEvent === "upcoming" && "opacity-35"
+            )}
+          >
+            Upcoming Event
+          </button>
+          <button
+            onClick={() => handleEventClick("past")}
+            className={cn(
+              "flex items-center justify-center w-full py-2 text-white rounded-lg bg-primary",
+              selectedEvent === "past" && "opacity-35"
+            )}
+          >
+            Past Event
+          </button>
+        </div>
       </div>
       <div className="flex items-center justify-start w-full gap-4 overflow-scroll lg:justify-center">
         {["Yogyakarta", "Jakarta", "Bandung", "Bogor", "Lainnya"].map(
           (item, index) => (
-            <button
+            <Badge
               key={index}
-              className="px-6 py-1 text-sm rounded-md bg-slate-100 hover:bg-slate-400 text-slate-700 hover:text-white bg-none"
+              onClick={() => alert(item)}
+              className="cursor-pointer"
             >
-              <h1>{item}</h1>
-            </button>
+              {item}
+            </Badge>
           )
         )}
       </div>
       <div className="grid grid-cols-2 gap-6 lg:grid-cols-3 card">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
           <div key={index} className="w-full">
-            <CardsEvent />
+            <CardsEvent image={Poster} />
           </div>
         ))}
       </div>

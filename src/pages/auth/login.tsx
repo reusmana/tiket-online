@@ -1,58 +1,133 @@
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
+import fetchApi from "../../lib/fetch-api";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useState } from "react";
+import { GoEyeClosed, GoEye } from "react-icons/go";
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [handlePasswordView, setHandlePasswordView] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await fetchApi.post("/login", {
+        email: (e.currentTarget.email as HTMLInputElement).value,
+        password: (e.currentTarget.password as HTMLInputElement).value,
+      });
+      setIsLoading(false);
+
+      navigate("/dashboard");
+      console.log(response);
+    } catch (error) {
+      setIsLoading(false);
+      console.error(error);
+    }
+  };
   return (
-    <div className="flex flex-col w-full min-h-screen bg-slate-200">
-      <Navbar />
-      <section className="flex flex-col min-h-[calc(100vh-(256px))]">
-        <div className="flex flex-col items-center justify-center flex-1">
-          <div className="flex flex-col items-center justify-center w-full max-w-xs gap-4 px-4 py-6 my-32 bg-white rounded-lg lg:max-w-sm lg:my-0 min-h-32 drop-shadow-xl">
-            <h1 className="text-2xl font-semibold uppercase">Login</h1>
-            <form action="" className="flex flex-col w-full gap-6">
-              <label htmlFor="username" className="flex flex-col w-full gap-1">
-                <span className="text-sm font-semibold uppercase">
-                  Username
-                </span>
-                <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:border-slate-400"
-                />
-              </label>
-              <label htmlFor="password" className="flex flex-col w-full gap-1">
-                <span className="text-sm font-semibold uppercase">
-                  password
-                </span>
-                <input
-                  type="text"
-                  name="password"
-                  id="password"
-                  className="w-full p-2 border rounded-lg focus:outline-none focus:border-slate-400"
-                />
-              </label>
-              <button className="w-full py-2 text-white rounded-lg bg-slate-400">
-                Login
-              </button>
-            </form>
-            <button className="flex items-center flex-1 gap-2 text-xl uppercase w-full py-1.5 rounded-lg justify-center  bg-blue-400">
-              Login With google
-              <FcGoogle />
-            </button>
-            <span className="flex">
-              do you no have an account?
-              <Link to="/register" className="ml-2 underline">
-                Register
-              </Link>
-            </span>
-          </div>
+    <section className="flex flex-col items-center justify-center w-full bg-[#F5F5F5] min-h-screen relative px-2">
+      <div className="flex flex-col items-center justify-center flex-1 max-w-[400px] mx-auto w-full">
+        <h1 className="text-3xl font-semibold uppercase">Sign In</h1>
+        <Button
+          type="button"
+          className="flex items-center justify-center gap-2 py-3 text-center bg-[#F5F5F5] border border-slate-400 my-10"
+        >
+          <FcGoogle className="text-xl" />
+          <span className="text-base text-slate-700">
+            Sign in with <span className="font-semibold">Google</span>
+          </span>
+        </Button>
+        <div className="flex items-center justify-center w-full gap-2 mb-10">
+          <span className="flex-1 h-px bg-secondary"></span>
+          <span className="">or sign Up with your email</span>
+          <span className="flex-1 h-px bg-secondary"></span>
         </div>
-      </section>
-      <Footer />
-    </div>
+        <form
+          action=""
+          onSubmit={loginUser}
+          className="grid w-full grid-cols-2 gap-4"
+        >
+          <label
+            htmlFor="email"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">
+              Email Address
+            </span>
+            <Input
+              name="email"
+              id="email"
+              type="email"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="password"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold uppercase">password</span>
+              <span className="text-sm font-normal underline cursor-pointer text-blue-primary">
+                Forgot Password?
+              </span>
+            </div>
+            <div className="relative flex items-center w-full">
+              <Input
+                name="password"
+                id="password"
+                type={handlePasswordView ? "text" : "password"}
+                className="pl-4 pr-10 py-3 border-2 bg-[#F5F5F5]"
+              />
+              <span
+                onClick={() => {
+                  setHandlePasswordView(!handlePasswordView);
+                }}
+                className="absolute text-2xl right-3 text-slate-600"
+              >
+                {handlePasswordView ? <GoEye /> : <GoEyeClosed />}
+              </span>
+            </div>
+          </label>
+
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full col-span-2 py-2.5 bg-primary flex items-center justify-center"
+          >
+            {isLoading ? (
+              <AiOutlineLoading3Quarters className="text-2xl animate-spin" />
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+        </form>
+
+        <span className="flex pb-20 mt-2 text-base lg:mt-10">
+          New to App?
+          <Link to="/register" className="ml-2 underline text-blue-primary">
+            Sign Up
+          </Link>
+        </span>
+      </div>
+      <div className="absolute flex flex-col gap-2 lg:gap-10 lg:flex-row bottom-2 left-2 lg:bottom-10 lg:left-10">
+        <span>© 2025 yourapp.com</span>
+        <span className="underline cursor-pointer text-blue-primary">
+          Contact Us
+        </span>
+      </div>
+      <div className="absolute flex flex-col gap-2 lg:gap-10 lg:flex-row bottom-2 right-2 lg:bottom-10 lg:right-10">
+        <span className="underline cursor-pointer text-blue-primary">
+          Terms & Conditions
+        </span>
+        <span className="underline cursor-pointer text-blue-primary">
+          Privacy Policy
+        </span>
+      </div>
+    </section>
   );
 };
 

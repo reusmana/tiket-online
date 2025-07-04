@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope-VariableFont_wght"),
+    url("./assets/fonts/Manrope-VariableFont_wght.ttf");
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+  scroll-behavior: smooth;
+}

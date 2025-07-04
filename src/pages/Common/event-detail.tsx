@@ -1,7 +1,14 @@
-import CeramahPoster from "../../assets/img.png";
+import CeramahPoster from "../../assets/posters/Poster 1 1.png";
 import { Link } from "react-router-dom";
+import Button from "../../components/ui/Button";
+import { useState } from "react";
+import { cn } from "../../lib/utils";
+import { CiCalendarDate } from "react-icons/ci";
+import { FaClock } from "react-icons/fa6";
+import { GrLocationPin } from "react-icons/gr";
 
 const EventDetail = () => {
+  const [isVIP, setIsVIP] = useState<boolean>(false);
   return (
     <div className="flex flex-col w-full">
       <section className="relative flex w-full mt-20 overflow-hidden lg:h-[32rem] h-screen bg-slate-400">
@@ -50,7 +57,7 @@ const EventDetail = () => {
           </div>
         </div>
       </section>
-      <section className="grid w-full max-w-screen-md gap-10 px-2 py-32 mx-auto lg:grid-cols-2">
+      <section className="grid w-full max-w-screen-lg gap-10 px-2 py-32 mx-auto lg:grid-cols-2">
         <div className="flex flex-col gap-6">
           <h4>
             Kalau badan aja butuh istirahat, masa hati enggak? 😊 Yuk! Cerita,
@@ -59,17 +66,45 @@ const EventDetail = () => {
           <p className="text-lg uppercase">
             MENATA HATI PALEMBANG SESI PAGI “BELAJAR MENERIMA TAKDIR”
           </p>
+          <ul className="flex flex-col gap-2 text-2xl">
+            <li className="flex items-center justify-start">
+              <CiCalendarDate /> :{" "}
+              <span className="text-xl">Minggu, 3 Agustus 2025</span>
+            </li>
+            <li className="flex items-center justify-start">
+              <FaClock /> :{" "}
+              <span className="text-xl">Pukul 09:00 - 11:00 WIB</span>
+            </li>
+            <li className="flex items-center justify-start">
+              <GrLocationPin className="text-2xl " /> :
+              <span className="text-xl">
+                Ballroom Wyndham Opi Hotel, Kota Palembang
+              </span>
+            </li>
+          </ul>
         </div>
         <div className="grid grid-cols-2 gap-4 h-fit">
-          <button className="py-3 text-white rounded-md bg-slate-900">
-            Regulder
-          </button>
-          <button className="py-3 text-orange-300 bg-transparent border border-orange-300 rounded-md">
+          <Button
+            onClick={() => setIsVIP(false)}
+            className={cn(
+              "py-3 text-white rounded-md bg-secondary border border-secondary",
+              isVIP && "bg-transparent text-secondary "
+            )}
+          >
+            Reguler
+          </Button>
+          <Button
+            onClick={() => setIsVIP(true)}
+            className={cn(
+              "py-3 text-orange-300 bg-transparent border border-orange-300 rounded-md",
+              isVIP && "bg-orange-300 text-white"
+            )}
+          >
             VIP
-          </button>
+          </Button>
           <Link
             to="/payment"
-            className="col-span-2 py-3 text-center text-white bg-blue-400 rounded-md"
+            className="col-span-2 py-3 text-center text-white rounded-md bg-primary"
           >
             Daftar Sekarang
           </Link>
