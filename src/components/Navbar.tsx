@@ -4,6 +4,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { cn } from "../lib/utils";
 import { useMediaQuery } from "react-responsive";
 import logo from "../assets/images/Logo MH.png";
+import Button from "./ui/Button";
+import { RiUserSmileLine } from "react-icons/ri";
 
 type NavbarProps = {
   onClick: () => void;
@@ -13,6 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
   const location = useLocation();
 
   const [showNavbar, setShowNavbar] = useState(true);
+  const [isLogin, setIsLogin] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -109,18 +112,24 @@ const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
             </a>
           </li>
         </ul>
-        <div className="flex gap-3">
-          <Link to="/register">
-            <button className="px-4 py-1.5 lg:py-2 text-white rounded-full bg-primary text-md">
-              Sign Up
-            </button>
-          </Link>
-          <Link to="/login">
-            <button className="px-4 py-1.5 lg:py-2 text-white rounded-full bg-tertiary text-md">
-              Sign In
-            </button>
-          </Link>
-        </div>
+        {isLogin ? (
+          <Button className="w-10 h-10 border rounded-full cursor-pointer min-w-10 hover:outline-8 outline-secondary outline">
+            <RiUserSmileLine className="w-full h-full" />
+          </Button>
+        ) : (
+          <div className="flex gap-3">
+            <Link to="/register">
+              <button className="px-4 py-1.5 lg:py-2 text-white rounded-full bg-primary text-md">
+                Sign Up
+              </button>
+            </Link>
+            <Link to="/login">
+              <button className="px-4 py-1.5 lg:py-2 text-white rounded-full bg-tertiary text-md">
+                Sign In
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

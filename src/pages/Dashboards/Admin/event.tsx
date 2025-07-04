@@ -6,12 +6,12 @@ import Input from "../../../components/ui/Input";
 const EventAdmin = () => {
   const [create, setCreate] = useState<boolean>(false);
   return (
-    <div className="flex flex-col pr-6">
+    <div className="flex flex-col w-full min-h-screen pr-6 overflow-scroll">
       <div
         onClick={() => {
           setCreate(!create);
         }}
-        className={`absolute inset-0 bg-black bg-opacity-30 z-[99999999] py-20 justify-center items-center ${
+        className={`absolute inset-0 overflow-y-scroll bg-black bg-opacity-30 z-[99999999] py-20 justify-center items-start px-2 ${
           create ? "flex" : "hidden"
         }`}
       >

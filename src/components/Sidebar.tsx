@@ -2,16 +2,14 @@ import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 
 type SidebarProps = {
-  open: boolean;
   setOpen?: (open: boolean) => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ open }) => {
+const Sidebar: React.FC<SidebarProps> = () => {
   return (
     <div
       className={cn(
-        "relative lg:min-w-72 w-0 z-[99999] h-[calc(100vh-80px)] lg:translate-x-[0%] translate-x-[-100%] bg-[#F5F5F5] duration-1000 transition-all ease-in-out ",
-        open && "translate-x-0 min-w-72 "
+        "relative lg:min-w-72 w-0 z-[99999] h-[calc(100vh-80px)] lg:block hidden bg-[#F5F5F5] duration-1000 transition-all ease-in-out "
       )}
     >
       <ul className="flex flex-col px-4 py-6 sidebar">
