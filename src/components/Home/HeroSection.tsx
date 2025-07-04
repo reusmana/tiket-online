@@ -12,10 +12,10 @@ const HeroSection: React.FC = () => {
       />
       <span className="absolute inset-0 flex items-center justify-start w-full h-full bg-black bg-opacity-0 max-w-[1480px] mx-auto ">
         <div className="flex flex-col items-start justify-center w-full gap-5 h-fit max-w-[987px]">
-          <h1 className="font-bold text-white text-8xl ">
+          <h1 className="text-4xl font-bold text-white lg:text-8xl ">
             Menata Hati Tenangkan Hatimu
           </h1>
-          <p className="text-3xl text-left text-white max-w-[827px]">
+          <p className="lg:text-3xl text-lg text-left text-white max-w-[827px]">
             Cerita, Curhat, Doa & Muhasabah bersama <br /> Ustadz Hilman Fauzi.
             Kami hadir lebih dekat dengan Anda. Temukan event kami disini!
           </p>

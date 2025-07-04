@@ -18,7 +18,7 @@ const CardsEvent: React.FC<CardEventProps> = ({
   slug,
 }) => {
   return (
-    <div className="flex flex-col items-start justify-between w-full pb-4 max-w-[473px] min-h-[844px] border border-slate-400 p-5 rounded-3xl">
+    <div className="flex flex-col items-start justify-between w-full pb-4 max-w-[473px] lg:min-h-[844px] min-h-[600px] border border-slate-400 p-5 rounded-3xl">
       <img
         src={image}
         alt=""
@@ -40,7 +40,7 @@ const CardsEvent: React.FC<CardEventProps> = ({
       </div>
       <Link
         to={`/event/${slug}`}
-        className="w-full py-2 text-2xl font-semibold text-center text-white rounded-full bg-primary lg:py-2"
+        className="w-full py-2 text-lg font-semibold text-center text-white rounded-full lg:text-2xl bg-primary lg:py-2"
       >
         Cek Ketersediaan Tiket
       </Link>

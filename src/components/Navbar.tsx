@@ -65,12 +65,12 @@ const Navbar: React.FC = () => {
         showNavbar ? "translate-y-0" : "-translate-y-[200%]"
       )}
     >
-      <div className="flex items-center justify-between w-full h-full px-10 max-w-screen-2xl">
+      <div className="flex items-center justify-between w-full h-full px-5 lg:px-10 max-w-screen-2xl">
         <div className="flex items-center justify-start gap-2">
           <button className="block text-2xl lg:hidden" onClick={handleOpen}>
             <GiHamburgerMenu />
           </button>
-          <img src={logo} alt="" className="h-10" />
+          <img src={logo} alt="" className="h-8 lg:h-10" />
         </div>
         <div
           className={`absolute inset-0 w-full bg-black bg-opacity-50 z-[88] h-screen lg:hidden flex transition-opacity duration-300 ${
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
           <div
             onClick={(event) => event.stopPropagation()}
             className={cn(
-              "absolute top-0 w-[calc(100%-8rem)] bg-white z-[88] h-screen flex items-center justify-center text-slate-700 duration-1000 transition-all ease-in-out",
+              "absolute -top-20 w-[calc(100%-8rem)] bg-white z-[88] min-h-screen h-full flex items-center justify-center text-slate-700 duration-1000 transition-all ease-in-out",
               open ? "translate-x-[-0%]" : "translate-x-[-100%]"
             )}
           >
@@ -154,12 +154,12 @@ const Navbar: React.FC = () => {
         </ul>
         <div className="flex gap-3">
           <Link to="/register">
-            <button className="px-4 py-2 text-white rounded-full bg-primary text-md">
+            <button className="px-4 py-1.5 lg:py-2 text-white rounded-full bg-primary text-md">
               Sign Up
             </button>
           </Link>
           <Link to="/login">
-            <button className="px-4 py-2 text-white rounded-full bg-tertiary text-md">
+            <button className="px-4 py-1.5 lg:py-2 text-white rounded-full bg-tertiary text-md">
               Sign In
             </button>
           </Link>

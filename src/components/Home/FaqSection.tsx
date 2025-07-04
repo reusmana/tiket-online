@@ -31,24 +31,28 @@ const FaqSection = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
   return (
-    <div id="faq" className="max-w-[1087px] w-full mx-auto pt-32 pb-10">
+    <div id="faq" className="max-w-[1087px] w-full mx-auto pt-32 pb-10 px-2">
       <div className="flex flex-col w-full">
-        <h1 className="mb-20 font-normal text-center text-7xl">FAQ</h1>
+        <h1 className="mb-20 text-4xl font-normal text-center lg:text-7xl">
+          FAQ
+        </h1>
         {faqs.map((faq, index) => (
           <div className="flex flex-col w-full group">
             <div
               className="flex items-center justify-between py-4 cursor-pointer"
               onClick={() => toggleFAQ(index)}
             >
-              <h2 className="text-4xl font-semibold">{faq.question}</h2>
+              <h2 className="text-xl font-semibold lg:text-4xl">
+                {faq.question}
+              </h2>
               <button className="text-4xl font-semibold">
                 {openIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
               </button>
             </div>
             <span
               className={cn(
-                "border-b-4 border-slate-400  overflow-hidden transition-[max-height] ease-in-out text-2xl",
-                openIndex === index ? "max-h-[100em]" : "max-h-[0]"
+                "border-b-4 border-slate-400  overflow-hidden transition-[max-height] ease-in-out  lg:text-2xl ",
+                openIndex === index ? "max-h-[100em] pb-2" : "max-h-[0]"
               )}
             >
               {faq.answer}

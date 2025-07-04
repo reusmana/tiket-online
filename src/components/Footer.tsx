@@ -9,16 +9,18 @@ const Footer: React.FC = () => {
       id="info"
       className="flex flex-col items-center justify-center w-full min-h-[561px] bg-black z-[999]"
     >
-      <div className="flex flex-col items-start justify-around w-full max-w-screen-xl gap-4 px-2 lg:gap-10 lg:flex-row">
+      <div className="flex flex-col items-start justify-around w-full max-w-screen-xl gap-4 px-2 py-10 lg:gap-10 lg:flex-row">
         <div className="flex flex-col items-start justify-center w-full mt-6 lg:gap-4 lg:mt-0 ">
           <h1 className="text-2xl font-semibold text-white">
-            <img src={Logo} alt="" className="max-w-[220px]" />
+            <img src={Logo} alt="" className="lg:max-w-[220px] max-w-[120px]" />
           </h1>
           <p className="text-base text-white ">Menata Hati, Tenangkan Hatimu</p>
         </div>
-        <div className="flex flex-col items-center justify-center w-full lg:items-start ">
-          <h4 className="text-2xl font-bold text-white uppercase ">Kontak</h4>
-          <div className="flex flex-col items-start justify-start w-full gap-2 mt-10">
+        <div className="flex flex-col items-start justify-center w-full lg:items-start ">
+          <h4 className="text-xl font-bold text-white uppercase lg:text-2xl ">
+            Kontak
+          </h4>
+          <div className="flex flex-col items-start justify-start w-full gap-2 lg:mt-10">
             <a href="#" className="text-xl text-white hover:underline">
               +62 821-1301-2721
             </a>
@@ -34,8 +36,10 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col items-start justify-start w-full ">
-          <h4 className="text-2xl font-bold text-white uppercase ">Alamat</h4>
-          <div className="flex flex-col items-center gap-5 mt-10 text-white">
+          <h4 className="text-xl font-bold text-white uppercase lg:text-2xl ">
+            Alamat
+          </h4>
+          <div className="flex flex-col items-center gap-5 text-white lg:mt-10">
             <span>
               Jl drupada V 1 perumahan indraprasta 2, Rt/Rw : 04/13, Tegal
               Gundil, Kec. Bogor Utara, Kota Bogor
