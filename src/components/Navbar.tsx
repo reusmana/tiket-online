@@ -113,8 +113,20 @@ const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
           </li>
         </ul>
         {isLogin ? (
-          <Button className="w-10 h-10 border rounded-full cursor-pointer min-w-10 hover:outline-8 outline-secondary outline">
+          <Button className="relative w-10 h-10 border rounded-full cursor-pointer group min-w-10 hover:outline-8 outline-secondary outline">
             <RiUserSmileLine className="w-full h-full" />
+            <div className="p-6 bg-white w-[16em] absolute right-0 group-hover:flex drop-shadow-xl shadow-xl border rounded-md hidden flex-col gap-4">
+              <Link to="/dashboard">
+                <button className="px-4 py-1.5 lg:py-2 text-white rounded-full w-full bg-primary text-md">
+                  Dashboard
+                </button>
+              </Link>
+              <Link to="/logout">
+                <button className="px-4 py-1.5 lg:py-2 w-full text-white rounded-full bg-tertiary text-md">
+                  Logout
+                </button>
+              </Link>
+            </div>
           </Button>
         ) : (
           <div className="flex gap-3">
