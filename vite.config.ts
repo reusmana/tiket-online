@@ -5,4 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   // base: "/tiket-online/",
   plugins: [react()],
+  server: {
+    allowedHosts: ["93c6-182-253-58-149.ngrok-free.app"],
+  },
 });

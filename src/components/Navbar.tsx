@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { cn } from "../lib/utils";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";//
 import logo from "../assets/images/Logo MH.png";
 import Button from "./ui/Button";
 import { RiUserSmileLine } from "react-icons/ri";
+import { getCookies, removeCookies } from "../lib/cookie";
+import fetchApi from "../lib/fetch-api";
 
 type NavbarProps = {
   onClick: () => void;
@@ -13,16 +15,30 @@ type NavbarProps = {
 
 const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
   const location = useLocation();
+  const authorization = getCookies("accessToken");
+  const navigate = useNavigate();
 
   const [showNavbar, setShowNavbar] = useState(true);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  // const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useEffect(() => {
+    if (authorization !== undefined) {
+      setIsLogin(true);
+    }
     window.scrollTo(0, 0);
   }, [location]);
+
+  const handleLogout = async () => {
+    const confirm = window.confirm("Are you sure you want to logout?");
+    if (!confirm) return;
+    const response = await fetchApi.post("/logout");
+    if (response.status !== 204) return;
+    removeCookies("accessToken");
+    navigate("/login", { replace: true });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,15 +133,18 @@ const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
             <RiUserSmileLine className="w-full h-full" />
             <div className="p-6 bg-white w-[16em] absolute right-0 group-hover:flex drop-shadow-xl shadow-xl border rounded-md hidden flex-col gap-4">
               <Link to="/dashboard">
-                <button className="px-4 py-1.5 lg:py-2 text-white rounded-full w-full bg-primary text-md">
+                <div className="px-4 py-1.5 lg:py-2 text-white rounded-full w-full bg-primary text-md">
                   Dashboard
-                </button>
+                </div>
               </Link>
-              <Link to="/logout">
-                <button className="px-4 py-1.5 lg:py-2 w-full text-white rounded-full bg-tertiary text-md">
-                  Logout
-                </button>
-              </Link>
+              <Button
+                onClick={() => {
+                  handleLogout();
+                }}
+                className="px-4 py-1.5 lg:py-2 w-full text-white rounded-full bg-tertiary text-md"
+              >
+                Logout
+              </Button>
             </div>
           </Button>
         ) : (

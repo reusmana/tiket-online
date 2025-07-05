@@ -1,3 +1,4 @@
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Default from "../layouts/default";
 import Dashboard from "../layouts/dashboard";
@@ -8,15 +9,17 @@ import DashboardPage from "../pages/Dashboards";
 import Event from "../pages/Common/event";
 import EventDetail from "../pages/Common/event-detail";
 import Payment from "../pages/Common/payment";
-import EventAdmin from "../pages/Dashboards/Admin/event";
-import Riwayat from "../pages/Dashboards/riwayat";
 import Galery from "../pages/Common/galery";
-import UpdateProfile from "../pages/Dashboards/profile";
+import Guests from "../layouts/guests";
+const EventAdmin = React.lazy(() => import("../pages/Dashboards/Admin/event"));
+const Users = React.lazy(() => import("../pages/Dashboards/Admin/users"));
+const Riwayat = React.lazy(() => import("../pages/Dashboards/riwayat"));
+const UpdateProfile = React.lazy(() => import("../pages/Dashboards/profile"));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Default />,
+    element: <Guests />,
     children: [
       {
         path: "",
@@ -31,12 +34,18 @@ const router = createBrowserRouter([
         element: <EventDetail />,
       },
       {
-        path: "payment",
-        element: <Payment />,
-      },
-      {
         path: "galery",
         element: <Galery />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <Default />,
+    children: [
+      {
+        path: "payment",
+        element: <Payment />,
       },
     ],
   },
@@ -51,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "events",
         element: <EventAdmin />,
+      },
+      {
+        path: "users",
+        element: <Users />,
       },
       {
         path: "riwayat",

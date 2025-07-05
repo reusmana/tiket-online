@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 
-type SidebarProps = {
-  setOpen?: (open: boolean) => void;
-};
-
-const Sidebar: React.FC<SidebarProps> = () => {
+const Sidebar: React.FC = () => {
   return (
     <div
       className={cn(
@@ -33,6 +29,17 @@ const Sidebar: React.FC<SidebarProps> = () => {
         >
           <Link to="/dashboard/events" className="ml-2 text-xl font-bold ">
             Event
+          </Link>
+        </li>
+        <li
+          className={cn(
+            "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
+            location.pathname === "/dashboard/users" &&
+              "border-primary bg-slate-900 border-l-4 text-white"
+          )}
+        >
+          <Link to="/dashboard/users" className="ml-2 text-xl font-bold ">
+            Users
           </Link>
         </li>
         <li

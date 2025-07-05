@@ -1,138 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import image from "../../../assets/img.png";
 import Button from "../../../components/ui/Button";
-import Input from "../../../components/ui/Input";
+import Pagination from "../../../components/Pagination";
+import fetchApi from "../../../lib/fetch-api";
+import type { EventList } from "../../../interfaces/users";
+import EventCreate from "./event-create";
 
+type EventListMeta = {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+};
 const EventAdmin = () => {
   const [create, setCreate] = useState<boolean>(false);
+  const [action, setAction] = useState(1);
+  const [data, setData] = useState<EventList[]>([]);
+  const [meta, setMeta] = useState<EventListMeta | undefined>();
+  const [edit, setEdit] = useState(false);
+
+  const fetchListEvent = async () => {
+    const url = `events?page=${action}&limit=10`;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = (await fetchApi.get(url)) as any;
+
+    setData(response.data);
+    setMeta(response.meta);
+    setAction(response.meta.page);
+  };
+
+  useEffect(() => {
+    fetchListEvent();
+  }, []);
+
+  useEffect(() => {
+    fetchListEvent();
+  }, [action]);
+
+  const handleDelete = async (id: number) => {
+    const confirm = window.confirm("Are you sure you want to delete this?");
+    if (!confirm) return;
+    const url = `events/${id}`;
+    await fetchApi.delete(url);
+    fetchListEvent();
+  };
+
   return (
     <div className="flex flex-col w-full min-h-screen pr-6 overflow-scroll">
-      <div
-        onClick={() => {
-          setCreate(!create);
-        }}
-        className={`absolute inset-0 overflow-y-scroll bg-black bg-opacity-30 z-[99999999] py-20 justify-center items-start px-2 ${
-          create ? "flex" : "hidden"
-        }`}
-      >
-        <div
-          className="w-full max-w-2xl p-6 bg-white rounded-lg min-h-20"
-          onClick={(event) => event.stopPropagation()}
-        >
-          <form action="" className="flex flex-col w-full gap-5">
-            <label
-              htmlFor="file"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">Image</span>
-              <Input
-                name="image"
-                id="file"
-                type="file"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-            <label
-              htmlFor="name"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">Name</span>
-              <Input
-                name="name"
-                id="name"
-                type="text"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-            <label
-              htmlFor="description"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">
-                Desription
-              </span>
-              <Input
-                name="description"
-                id="description"
-                type="text"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-            <label
-              htmlFor="city"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">City</span>
-              <Input
-                name="city"
-                id="city"
-                type="text"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-            <label
-              htmlFor="venue"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">Venue</span>
-              <Input
-                name="venue"
-                id="venue"
-                type="text"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-            <label
-              htmlFor="address"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">Address</span>
-              <Input
-                name="address"
-                id="address"
-                type="text"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-
-            <label
-              htmlFor="session"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">Session</span>
-              <div className="grid w-full grid-cols-2 gap-2">
-                <Input
-                  name="session"
-                  id="session"
-                  type="date"
-                  className="px-4 py-3 border-2 bg-[#F5F5F5]"
-                />
-                <Input
-                  name="session"
-                  id="session"
-                  type="time"
-                  className="px-4 py-3 border-2 bg-[#F5F5F5]"
-                />
-              </div>
-            </label>
-            <label
-              htmlFor="pricing"
-              className="flex flex-col w-full col-span-2 gap-1"
-            >
-              <span className="text-sm font-semibold uppercase">Price</span>
-              <Input
-                name="pricing"
-                id="pricing"
-                type="number"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </label>
-            <Button type="submit" className="py-3 bg-primary">
-              Create
-            </Button>
-          </form>
-        </div>
-      </div>
+      <EventCreate create={create} setCreate={setCreate} />
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-bold">Event </h1>
         <Button
@@ -151,9 +66,46 @@ const EventAdmin = () => {
             <th className="w-32 py-4 text-lg border">Date</th>
             <th className="w-32 py-4 text-lg border">Time</th>
             <th className="w-32 py-4 text-lg border">Location</th>
+            <th className="w-32 py-4 text-lg border">Action</th>
           </tr>
         </thead>
         <tbody>
+          {data.map((item, index) => (
+            <tr className="border" key={index}>
+              <td className="py-2 text-center border">1</td>
+              <td className="py-2 text-center border ">
+                <div className="flex justify-center">
+                  <img src={item.thumbnail} alt="" className="h-24" />
+                </div>
+              </td>
+              <td className="py-2 text-center border">{item.name}</td>
+              <td className="py-2 text-center border">
+                {new Date().toISOString().split("T")[0]}
+              </td>
+              <td className="py-2 text-center border">
+                {item.startDate} - {item.endDate}
+              </td>
+              <td className="py-2 text-center border">{item.city}</td>
+              <td className="py-2 text-center border">
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    className="px-4 py-2 text-white bg-yellow-500 rounded-md w-fit"
+                    onClick={() => setEdit(true)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    className="px-4 py-2 text-white bg-red-500 rounded-md w-fit"
+                    onClick={() => {
+                      handleDelete(item.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </td>
+            </tr>
+          ))}
           <tr className="border">
             <td className="py-2 text-center border">1</td>
             <td className="py-2 text-center border ">
@@ -167,149 +119,32 @@ const EventAdmin = () => {
             </td>
             <td className="py-2 text-center border">09:00</td>
             <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">2</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
+            <td className="py-2 text-center border">
+              <div className="flex items-center justify-center gap-2">
+                <Button
+                  className="px-4 py-2 text-white bg-yellow-500 rounded-md w-fit"
+                  onClick={() => {
+                    setEdit(true);
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  className="px-4 py-2 text-white bg-red-500 rounded-md w-fit"
+                  onClick={() => {
+                    handleDelete(1);
+                  }}
+                >
+                  Delete
+                </Button>
               </div>
             </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
-          </tr>
-          <tr className="border">
-            <td className="py-2 text-center border">3</td>
-            <td className="py-2 text-center border ">
-              <div className="flex justify-center">
-                <img src={image} alt="" className="h-24" />
-              </div>
-            </td>
-            <td className="py-2 text-center border">Ustadz Hilman Fauzi</td>
-            <td className="py-2 text-center border">
-              {new Date().toISOString().split("T")[0]}
-            </td>
-            <td className="py-2 text-center border">09:00</td>
-            <td className="py-2 text-center border">Jakarta</td>
           </tr>
         </tbody>
       </table>
+      <div className="flex items-center justify-center w-full py-5">
+        <Pagination count={meta?.totalItems ?? 10} setAction={setAction} />
+      </div>
     </div>
   );
 };

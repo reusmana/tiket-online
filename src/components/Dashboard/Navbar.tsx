@@ -1,5 +1,5 @@
 import { GiHamburgerMenu } from "react-icons/gi";
-import Button from "../../components/ui/Button";
+import Button from "../ui/Button";
 import { Link } from "react-router-dom";
 import { RiUserSmileLine } from "react-icons/ri";
 import Logo from "../../assets/images/Logo MH.png";

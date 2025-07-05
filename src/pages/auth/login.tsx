@@ -6,10 +6,14 @@ import fetchApi from "../../lib/fetch-api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useState } from "react";
 import { GoEyeClosed, GoEye } from "react-icons/go";
+// import { UserContext } from "../../context/user-context";
+import { setCookies } from "../../lib/cookie";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [handlePasswordView, setHandlePasswordView] = useState<boolean>(false);
+
+  // const context = useContext(UserContext);
   const navigate = useNavigate();
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,8 +25,12 @@ const Login = () => {
       });
       setIsLoading(false);
 
+      const { token, ...userData } = response.data;
+      setCookies("accessToken", token);
+      // context?.setLocalStrorage(userData);
+      console.log(userData);
+
       navigate("/dashboard");
-      console.log(response);
     } catch (error) {
       setIsLoading(false);
       console.error(error);

@@ -1,9 +1,11 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosResponse } from "axios";
+import { getCookies } from "./cookie";
 
 const fetchApi: AxiosInstance = axios.create({
   baseURL:
-    import.meta.env.VITE_API_BASE_URL || "https://api.jokian.example.com/api",
+    import.meta.env.VITE_API_BASE_URL ||
+    "https://farhanmaulidan.my.id/api-ticket/api/",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
@@ -13,7 +15,7 @@ const fetchApi: AxiosInstance = axios.create({
 
 fetchApi.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = getCookies("accessToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

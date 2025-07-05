@@ -11,6 +11,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [handlePasswordView, setHandlePasswordView] = useState<boolean>(false);
   const navigate = useNavigate();
+
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -20,9 +21,9 @@ const Register = () => {
         email: (e.currentTarget.email as HTMLInputElement).value,
         password: (e.currentTarget.password as HTMLInputElement).value,
       });
+      localStorage.setItem("users", JSON.stringify(response.data));
       setIsLoading(false);
-      navigate("/dashboard");
-      console.log(response);
+      navigate("/login");
     } catch (error) {
       setIsLoading(false);
       console.error(error);
