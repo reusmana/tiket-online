@@ -1,0 +1,341 @@
+import React, { useEffect, useState } from "react";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import type {
+  EventCreated,
+  EventList,
+  EventUpdate,
+  SessionsList,
+} from "../../../interfaces/event-admin";
+import fetchApi from "../../../lib/fetch-api";
+import Editor, { type ContentEditableEvent } from "react-simple-wysiwyg";
+import Loading from "../../Loading";
+import { MdOutlinePlusOne } from "react-icons/md";
+
+type EventCreateProps = {
+  id: number;
+  close: () => void;
+};
+
+const EventEdit: React.FC<EventCreateProps> = ({ id, close }) => {
+  const [dataEvent, setDataEvent] = useState<EventList>();
+  const [desctiption, setDesctiption] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [sessionList, setSessionList] = useState<SessionsList[]>([]);
+
+  const handleAddSession = (
+    index: number,
+    field: "title" | "startTime" | "endTime",
+    value: string
+  ) => {
+    setSessionList((prev) =>
+      prev.map((item, i) =>
+        i === index - 1 ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  const handleAdd = () => {
+    const lastId = sessionList.at(-1)?.id ?? 0;
+    setSessionList((prev) => [
+      ...prev,
+      {
+        id: lastId + 1,
+        title: "",
+        startTime: "",
+        endTime: "",
+      },
+    ]);
+  };
+
+  const handleChangeValue = (key: string, value: any) => {
+    setDataEvent((prev: any) => ({ ...prev, [key]: value }));
+  };
+
+  const handleInput = (e: ContentEditableEvent) => {
+    setDesctiption(e.target.value);
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchListEvent = async () => {
+      const url = `events/${id}`;
+      const response = (await fetchApi.get(url)) as any;
+      console.log(response.data);
+      setDesctiption(response.data.description);
+      setDataEvent(response.data);
+      setSessionList(response.data.sessions);
+      setIsLoading(false);
+    };
+    fetchListEvent();
+  }, []);
+
+  const handleForm = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+
+    console.log(event.currentTarget.names as HTMLInputElement);
+
+    try {
+      const request: EventUpdate = {
+        poster: (event.currentTarget.image as HTMLInputElement).files![0],
+        name: (event.currentTarget.names as HTMLInputElement).value,
+        event_date: (event.currentTarget.event_date as HTMLInputElement).value,
+        description: desctiption,
+        city: (event.currentTarget.city as HTMLInputElement).value,
+        venue: (event.currentTarget.venue as HTMLInputElement).value,
+        address: (event.currentTarget.address as HTMLInputElement).value,
+        regular_price: parseInt(
+          (event.currentTarget.regular_price as HTMLInputElement).value
+        ),
+        vip_price: parseInt(
+          (event.currentTarget.vip_price as HTMLInputElement).value
+        ),
+
+        // sessions: sessionList,
+      };
+
+      const formData = new FormData();
+      Object.keys(request).forEach((key) => {
+        const value = request[key as keyof EventCreated];
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else if (Array.isArray(value)) {
+          value.forEach((item: any) => {
+            Object.keys(item).forEach((subKey) => {
+              formData.append(`${key}[${subKey}]`, item[subKey]);
+            });
+          });
+        } else {
+          formData.append(key, String(value));
+        }
+      });
+      const data = Object.fromEntries(formData);
+      console.log(data);
+
+      const response = await fetchApi.put(`/events/${dataEvent?.id}`, data);
+      if (response.status === 200) {
+        setIsLoading(false);
+        close();
+      } else {
+        console.log(response);
+        setIsLoading(false);
+        alert("Gagal menambahkan event");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.error(error);
+      alert("Gagal menambahkan event");
+    }
+  };
+  return (
+    <div
+      onClick={close}
+      className={`absolute inset-0 flex overflow-y-scroll bg-black bg-opacity-30 z-[99999999] py-20 justify-center items-start px-2 `}
+    >
+      {isLoading && <Loading />}
+      <div
+        className="w-full max-w-2xl p-6 bg-white rounded-lg min-h-20"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <form
+          action=""
+          onSubmit={handleForm}
+          className="flex flex-col w-full gap-5"
+        >
+          <Input
+            id="ids"
+            name="ids"
+            value={dataEvent?.id}
+            className="hidden"
+          ></Input>
+          <label
+            htmlFor="file"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Image</span>
+            <Input
+              name="image"
+              id="file"
+              type="file"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="names"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Name</span>
+            <Input
+              name="names"
+              id="names"
+              type="text"
+              value={dataEvent?.name}
+              onChange={(e) => handleChangeValue("name", e.target.value)}
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="description"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Desription</span>
+            <Editor
+              value={desctiption}
+              onChange={handleInput}
+              className="px-4 py-3 border-2 bg-[#F5F5F5] min-h-32"
+            />
+          </label>
+          <label
+            htmlFor="city"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">City</span>
+            <Input
+              name="city"
+              id="city"
+              type="text"
+              value={dataEvent?.city}
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="venue"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Venue</span>
+            <Input
+              name="venue"
+              id="venue"
+              type="text"
+              value={dataEvent?.venue}
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="address"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Address</span>
+            <Input
+              name="address"
+              id="address"
+              type="text"
+              value={dataEvent?.address}
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="regular_price"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">
+              regular_price
+            </span>
+            <Input
+              name="regular_price"
+              id="regular_price"
+              type="number"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="vip_price"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">vip_price</span>
+            <Input
+              name="vip_price"
+              id="vip_price"
+              type="number"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="event_date"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">event_date</span>
+            <Input
+              name="event_date"
+              id="event_date"
+              type="datetime-local"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+
+          {/* <label
+            htmlFor="session"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm font-semibold uppercase">Session</span>
+              <button className="text-2xl" type="button" onClick={handleAdd}>
+                <MdOutlinePlusOne />
+              </button>
+            </div>
+            {sessionList.map((item, index: number) => (
+              <div className="grid w-full grid-cols-3 gap-2" key={index}>
+                <Input
+                  name="session"
+                  id="session"
+                  type="text"
+                  value={item.title}
+                  className="px-4 py-3 border-2 bg-[#F5F5F5]"
+                  onChange={(event: any) =>
+                    handleAddSession(index + 1, "title", event.target.value)
+                  }
+                />
+                <Input
+                  name="session"
+                  id="session"
+                  type="datetime-local"
+                  className="px-4 py-3 border-2 bg-[#F5F5F5]"
+                  value={
+                    item.startTime
+                      ? new Date(item.startTime).toISOString().slice(0, 16)
+                      : item.startTime
+                  }
+                  onChange={(event: any) =>
+                    handleAddSession(index + 1, "startTime", event.target.value)
+                  }
+                />
+                <Input
+                  name="session"
+                  id="session"
+                  type="datetime-local"
+                  className="px-4 py-3 border-2 bg-[#F5F5F5]"
+                  value={
+                    item.endTime
+                      ? new Date(item.endTime).toISOString().slice(0, 16)
+                      : item.endTime
+                  }
+                  onChange={(event: any) =>
+                    handleAddSession(index + 1, "endTime", event.target.value)
+                  }
+                />
+              </div>
+            ))}
+          </label> */}
+          <label
+            htmlFor="pricing"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Price</span>
+            <Input
+              name="pricing"
+              id="pricing"
+              type="number"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <Button type="submit" className="py-3 bg-primary">
+            Edit
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default EventEdit;

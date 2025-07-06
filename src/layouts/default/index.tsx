@@ -17,7 +17,6 @@ const Default = () => {
   };
 
   useEffect(() => {
-    console.log(location);
     if (authorization === undefined) {
       navigate("/login", { replace: true });
     } else {

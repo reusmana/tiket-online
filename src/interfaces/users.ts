@@ -4,8 +4,6 @@ interface User {
   role: string;
   name: string;
   email: string;
-  photo_url: string;
-  information: boolean;
 }
 
 interface UserDump {
@@ -18,20 +16,29 @@ interface UserDump {
   updatedAt: string;
 }
 
-interface EventList {
-  //daftar uncoming event
+interface UserListAdmin {
   id: number;
   name: string;
-  city: string;
-  startDate: string;
-  endDate: string;
-  thumbnail: string;
+  email: string;
+  role: string;
+}
+
+interface UserCreateByAdmin {
+  name: string;
+  email: string;
+  role: string;
+  password: string;
 }
 
 interface UserUpdate {
   // req update user
+  id: number;
   name: string;
-  password: string;
+  username: string;
+  email: string;
+  phone: string;
+  profile_url: File | null;
+  role: string;
 }
 
 interface UserContextType {
@@ -51,5 +58,6 @@ export type {
   UsersProviderProps,
   UserDump,
   UserUpdate,
-  EventList,
+  UserListAdmin,
+  UserCreateByAdmin,
 };

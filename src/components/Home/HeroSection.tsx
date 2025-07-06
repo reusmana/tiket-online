@@ -11,7 +11,7 @@ const HeroSection: React.FC = () => {
         className="object-cover object-center w-full h-screen"
       />
       <span className="absolute inset-0 flex items-center justify-start w-full h-full bg-black bg-opacity-0 max-w-[1480px] mx-auto ">
-        <div className="flex flex-col items-start justify-center w-full gap-5 h-fit max-w-[987px]">
+        <div className="flex flex-col items-start justify-center w-full gap-5 h-fit max-w-[987px] px-2">
           <h1 className="text-4xl font-bold text-white lg:text-8xl ">
             Menata Hati Tenangkan Hatimu
           </h1>

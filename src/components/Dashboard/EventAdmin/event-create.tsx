@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
 import fetchApi from "../../../lib/fetch-api";
 import type { EventCreated } from "../../../interfaces/event-admin";
 import Editor, { type ContentEditableEvent } from "react-simple-wysiwyg";
@@ -21,21 +21,19 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
 
     try {
       const request: EventCreated = {
-        image: (event.currentTarget.image as HTMLInputElement).files![0],
+        poster: (event.currentTarget.image as HTMLInputElement).files![0],
         name: (event.currentTarget.names as HTMLInputElement).value,
         description: desctiption,
         city: (event.currentTarget.city as HTMLInputElement).value,
         venue: (event.currentTarget.venue as HTMLInputElement).value,
         address: (event.currentTarget.address as HTMLInputElement).value,
-        sessions: [
-          {
-            date: (event.currentTarget.date as HTMLInputElement).value,
-            time: (event.currentTarget.time as HTMLInputElement).value,
-          },
-        ],
-        pricing: Number(
-          (event.currentTarget.pricing as HTMLInputElement).value
+        regular_price: parseInt(
+          (event.currentTarget.regular_price as HTMLInputElement).value
         ),
+        vip_price: parseInt(
+          (event.currentTarget.vip_price as HTMLInputElement).value
+        ),
+        event_date: (event.currentTarget.event_date as HTMLInputElement).value,
       };
 
       const formData = new FormData();
@@ -44,7 +42,6 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
         if (value instanceof File) {
           formData.append(key, value);
         } else if (Array.isArray(value)) {
-          // Handle array values (e.g., sessions)
           value.forEach((item: any) => {
             Object.keys(item).forEach((subKey) => {
               formData.append(`${key}[${subKey}]`, item[subKey]);
@@ -54,8 +51,9 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
           formData.append(key, String(value));
         }
       });
+
       const data = Object.fromEntries(formData);
-      console.log(data);
+
       const response = await fetchApi.post("/events", data, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -64,7 +62,6 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
       if (response.status === 201) {
         setCreate(false);
       } else {
-        console.log(response);
         alert("Gagal menambahkan event");
       }
     } catch (error) {
@@ -161,36 +158,41 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
               className="px-4 py-3 border-2 bg-[#F5F5F5]"
             />
           </label>
-
           <label
-            htmlFor="session"
+            htmlFor="regular_price"
             className="flex flex-col w-full col-span-2 gap-1"
           >
-            <span className="text-sm font-semibold uppercase">Session</span>
-            <div className="grid w-full grid-cols-2 gap-2">
-              <Input
-                name="session"
-                id="session"
-                type="date"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-              <Input
-                name="session"
-                id="session"
-                type="time"
-                className="px-4 py-3 border-2 bg-[#F5F5F5]"
-              />
-            </div>
+            <span className="text-sm font-semibold uppercase">
+              Regular Price
+            </span>
+            <Input
+              name="regular_price"
+              id="regular_price"
+              type="number"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
           </label>
           <label
-            htmlFor="pricing"
+            htmlFor="vip_price"
             className="flex flex-col w-full col-span-2 gap-1"
           >
-            <span className="text-sm font-semibold uppercase">Price</span>
+            <span className="text-sm font-semibold uppercase">Vip Price</span>
             <Input
-              name="pricing"
-              id="pricing"
+              name="vip_price"
+              id="vip_price"
               type="number"
+              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            />
+          </label>
+          <label
+            htmlFor="event_date"
+            className="flex flex-col w-full col-span-2 gap-1"
+          >
+            <span className="text-sm font-semibold uppercase">Event Date</span>
+            <Input
+              name="event_date"
+              id="event_date"
+              type="date"
               className="px-4 py-3 border-2 bg-[#F5F5F5]"
             />
           </label>

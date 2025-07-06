@@ -11,8 +11,6 @@ const defaultUser: User = {
   role: "",
   name: "",
   email: "",
-  photo_url: "",
-  information: false,
 };
 
 export const UserProvider: React.FC<UsersProviderProps> = ({ children }) => {

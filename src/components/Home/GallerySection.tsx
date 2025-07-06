@@ -16,7 +16,7 @@ const GallerySection = () => {
         </div>
       </div>
       <Link
-        to="/"
+        to="/galery"
         className="flex items-center justify-center px-10 py-4 mx-auto mb-20 text-white border border-white rounded-full lg:text-5xl w-fit"
       >
         Lihat lebih lanjut

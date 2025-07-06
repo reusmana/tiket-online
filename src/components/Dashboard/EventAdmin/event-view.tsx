@@ -1,22 +1,36 @@
-import React, { useEffect } from "react";
-import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
+import React, { useEffect, useState } from "react";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import type { EventList } from "../../../interfaces/event-admin";
+import fetchApi from "../../../lib/fetch-api";
+import Editor, { type ContentEditableEvent } from "react-simple-wysiwyg";
 
 type EventCreateProps = {
-  create: boolean;
-  setCreate: (create: boolean) => void;
+  id: number;
+  close: () => void;
 };
 
-const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
-  useEffect(() => {}, []);
+const EventView: React.FC<EventCreateProps> = ({ id, close }) => {
+  const [dataEvent, setDataEvent] = useState<EventList>();
+  const [desctiption, setDesctiption] = useState<string>("");
+
+  const handleInput = (e: ContentEditableEvent) => {
+    setDesctiption(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchListEvent = async () => {
+      const url = `events/${id}`;
+      const response = (await fetchApi.get(url)) as any;
+      setDesctiption(response.data.description);
+      setDataEvent(response.data);
+    };
+    fetchListEvent();
+  }, []);
   return (
     <div
-      onClick={() => {
-        setCreate(!create);
-      }}
-      className={`absolute inset-0 overflow-y-scroll bg-black bg-opacity-30 z-[99999999] py-20 justify-center items-start px-2 ${
-        create ? "flex" : "hidden"
-      }`}
+      onClick={close}
+      className={`absolute inset-0 flex overflow-y-scroll bg-black bg-opacity-30 z-[99999999] py-20 justify-center items-start px-2 `}
     >
       <div
         className="w-full max-w-2xl p-6 bg-white rounded-lg min-h-20"
@@ -44,6 +58,7 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
               name="name"
               id="name"
               type="text"
+              value={dataEvent?.name}
               className="px-4 py-3 border-2 bg-[#F5F5F5]"
             />
           </label>
@@ -52,11 +67,10 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
             className="flex flex-col w-full col-span-2 gap-1"
           >
             <span className="text-sm font-semibold uppercase">Desription</span>
-            <Input
-              name="description"
-              id="description"
-              type="text"
-              className="px-4 py-3 border-2 bg-[#F5F5F5]"
+            <Editor
+              value={desctiption}
+              onChange={handleInput}
+              className="px-4 py-3 border-2 bg-[#F5F5F5] min-h-32"
             />
           </label>
           <label
@@ -68,6 +82,7 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
               name="city"
               id="city"
               type="text"
+              value={dataEvent?.city}
               className="px-4 py-3 border-2 bg-[#F5F5F5]"
             />
           </label>
@@ -80,6 +95,7 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
               name="venue"
               id="venue"
               type="text"
+              value={dataEvent?.venue}
               className="px-4 py-3 border-2 bg-[#F5F5F5]"
             />
           </label>
@@ -92,6 +108,7 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
               name="address"
               id="address"
               type="text"
+              value={dataEvent?.address}
               className="px-4 py-3 border-2 bg-[#F5F5F5]"
             />
           </label>
@@ -129,7 +146,7 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
             />
           </label>
           <Button type="submit" className="py-3 bg-primary">
-            Create
+            Edit
           </Button>
         </form>
       </div>
@@ -137,4 +154,4 @@ const EventCreate: React.FC<EventCreateProps> = ({ create, setCreate }) => {
   );
 };
 
-export default EventCreate;
+export default EventView;

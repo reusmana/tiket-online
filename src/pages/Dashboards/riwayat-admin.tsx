@@ -5,7 +5,7 @@ import fetchApi from "../../lib/fetch-api";
 import Loading from "../../components/Loading";
 import ViewOrder from "../../components/Dashboard/OrdersUsers/ViewOrder";
 
-const Riwayat = () => {
+const RiwayatAdmin = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<OrderList[]>([]);
   const [openView, setOpenView] = useState({
@@ -16,7 +16,7 @@ const Riwayat = () => {
   const fetchListEvent = async () => {
     try {
       setIsLoading(true);
-      const url = `/orders`;
+      const url = `/admin/orders`;
       const response = (await fetchApi.get(url)) as any;
       setData(response.data);
       setIsLoading(false);
@@ -44,7 +44,7 @@ const Riwayat = () => {
       {openView.open && (
         <ViewOrder id={openView.id} setOpenView={handleAfterReject} />
       )}
-      <h1 className="text-4xl font-bold">Order </h1>
+      <h1 className="text-4xl font-bold">Order Users </h1>
       <table className="w-full mt-10 table-fixed">
         <thead>
           <tr className="w-full border">
@@ -100,4 +100,4 @@ const Riwayat = () => {
   );
 };
 
-export default Riwayat;
+export default RiwayatAdmin;

@@ -5,9 +5,14 @@ import { cn } from "../../lib/utils";
 type DrawerProps = {
   open: boolean;
   handleOpen: () => void;
+  router: { path: string; name: string }[];
 };
 
-const DrawerDashboard: React.FC<DrawerProps> = ({ open, handleOpen }) => {
+const DrawerDashboard: React.FC<DrawerProps> = ({
+  open,
+  handleOpen,
+  router,
+}) => {
   const location = useLocation();
   return (
     <div
@@ -26,49 +31,19 @@ const DrawerDashboard: React.FC<DrawerProps> = ({ open, handleOpen }) => {
         )}
       >
         <ul className="flex flex-col items-start justify-center w-full gap-10">
-          <li
-            className={cn(
-              "text-lg font-medium border-l-4 border-primary w-full py-2",
-              location.pathname === "/dashboard" && "bg-slate-900 text-white"
-            )}
-          >
-            <Link to="/dashboard" className="pl-2">
-              Dashboard
-            </Link>
-          </li>
-          <li
-            className={cn(
-              "text-lg font-medium border-l-4 border-primary w-full py-2",
-              location.pathname === "/dashboard/events" &&
-                "bg-slate-900 text-white"
-            )}
-          >
-            <Link to="/dashboard/events" className="pl-2">
-              Event
-            </Link>
-          </li>
-          <li
-            className={cn(
-              "text-lg font-medium border-l-4 border-primary w-full py-2",
-              location.pathname === "/dashboard/riwayat" &&
-                "bg-slate-900 text-white"
-            )}
-          >
-            <Link to="/dashboard/riwayat" className="pl-2">
-              Riwayat
-            </Link>
-          </li>
-          <li
-            className={cn(
-              "text-lg font-medium border-l-4 border-primary w-full py-2",
-              location.pathname === "/dashboard/profile" &&
-                "bg-slate-900 text-white"
-            )}
-          >
-            <Link to="/dashboard/profile" className="pl-2">
-              Profile
-            </Link>
-          </li>
+          {router.map((item, index) => (
+            <li
+              key={index}
+              className={cn(
+                "text-lg font-medium border-l-4 border-primary w-full py-2",
+                location.pathname === item.path && "bg-slate-900 text-white"
+              )}
+            >
+              <Link to={item.path} className="pl-2">
+                {item.name}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

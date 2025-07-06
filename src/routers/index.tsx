@@ -1,18 +1,20 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Default from "../layouts/default";
-import Dashboard from "../layouts/dashboard";
+import DashboardAdmin from "../layouts/dashboard/dashboard-admin";
+import DashboardUsers from "../layouts/dashboard/dashboard-users";
 import Login from "../pages/auth/login";
 import Register from "../pages/auth/register";
 import Home from "../pages/Common/home";
-import DashboardPage from "../pages/Dashboards";
 import Event from "../pages/Common/event";
 import EventDetail from "../pages/Common/event-detail";
 import Payment from "../pages/Common/payment";
 import Galery from "../pages/Common/galery";
 import Guests from "../layouts/guests";
+import RiwayatAdmin from "../pages/Dashboards/riwayat-admin";
+import PaymentAdmin from "../pages/Dashboards/payment-admin";
 const EventAdmin = React.lazy(() => import("../pages/Dashboards/Admin/event"));
-const Users = React.lazy(() => import("../pages/Dashboards/Admin/users"));
+const UsersAdmin = React.lazy(() => import("../pages/Dashboards/Admin/users"));
 const Riwayat = React.lazy(() => import("../pages/Dashboards/riwayat"));
 const UpdateProfile = React.lazy(() => import("../pages/Dashboards/profile"));
 
@@ -50,23 +52,33 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
+    path: "/dashboard/admin",
+    element: <DashboardAdmin />,
     children: [
-      {
-        path: "",
-        element: <DashboardPage />,
-      },
       {
         path: "events",
         element: <EventAdmin />,
       },
       {
         path: "users",
-        element: <Users />,
+        element: <UsersAdmin />,
       },
       {
-        path: "riwayat",
+        path: "orders",
+        element: <RiwayatAdmin />,
+      },
+      {
+        path: "payment",
+        element: <PaymentAdmin />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardUsers />,
+    children: [
+      {
+        path: "orders",
         element: <Riwayat />,
       },
       {

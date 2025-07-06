@@ -1,13 +1,6 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import GaleryCard from "../../components/GalleryCard";
 import Image2 from "../../assets/galery2.png";
 const Galery = () => {
-  const loc = useLocation();
-  useEffect(() => {
-    const q = loc.search.split("=")[1];
-    console.log(q);
-  }, []);
   return (
     <section className="flex flex-col w-full max-w-screen-xl gap-10 px-2 py-20 mx-auto overflow-scroll lg:py-32">
       <div className="flex flex-col items-center justify-center w-full gap-1">

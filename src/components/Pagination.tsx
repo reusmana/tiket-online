@@ -86,7 +86,6 @@ const Pagination: React.FC<PaginationProps> = ({ count, setAction }) => {
         )}
         <ul className="flex items-center gap-1 text-xl">
           {pageNumber.length > 0 &&
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             pageNumber.map((val: any, index) =>
               typeof val === "number" ? (
                 <li key={index}>

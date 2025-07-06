@@ -4,16 +4,16 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import fetchApi from "../../lib/fetch-api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GoEyeClosed, GoEye } from "react-icons/go";
-// import { UserContext } from "../../context/user-context";
+import { UserContext } from "../../context/user-context";
 import { setCookies } from "../../lib/cookie";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [handlePasswordView, setHandlePasswordView] = useState<boolean>(false);
 
-  // const context = useContext(UserContext);
+  const context = useContext(UserContext);
   const navigate = useNavigate();
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,12 +25,15 @@ const Login = () => {
       });
       setIsLoading(false);
 
-      const { token, ...userData } = response.data;
+      const { token, user } = response.data;
       setCookies("accessToken", token);
-      // context?.setLocalStrorage(userData);
-      console.log(userData);
+      context?.setLocalStrorage(user);
 
-      navigate("/dashboard");
+      if (user.role === "admin") {
+        navigate("/dashboard/admin/events");
+      } else {
+        navigate("/dashboard/profile");
+      }
     } catch (error) {
       setIsLoading(false);
       console.error(error);

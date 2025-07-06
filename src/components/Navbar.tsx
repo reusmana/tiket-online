@@ -16,11 +16,14 @@ type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
   const location = useLocation();
   const authorization = getCookies("accessToken");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const [showNavbar, setShowNavbar] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const storage = localStorage.getItem("users");
+  const role = storage ? JSON.parse(storage) : null;
 
   // const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -34,9 +37,14 @@ const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
   const handleLogout = async () => {
     const confirm = window.confirm("Are you sure you want to logout?");
     if (!confirm) return;
+    setIsLoading(true);
     const response = await fetchApi.post("/logout");
-    if (response.status !== 204) return;
+    if (response.status !== 204) {
+      setIsLoading(false);
+      return;
+    }
     removeCookies("accessToken");
+    setIsLoading(false);
     navigate("/login", { replace: true });
   };
 
@@ -129,24 +137,32 @@ const Navbar: React.FC<NavbarProps> = ({ onClick }) => {
           </li>
         </ul>
         {isLogin ? (
-          <Button className="relative w-10 h-10 border rounded-full cursor-pointer group min-w-10 hover:outline-8 outline-secondary outline">
-            <RiUserSmileLine className="w-full h-full" />
+          <div className="relative w-10 h-10 border rounded-full cursor-pointer group min-w-10 hover:outline-8 outline-secondary outline">
+            <RiUserSmileLine
+              className={cn("w-full h-full", isLoading && "animate-spin")}
+            />
             <div className="p-6 bg-white w-[16em] absolute right-0 group-hover:flex drop-shadow-xl shadow-xl border rounded-md hidden flex-col gap-4">
-              <Link to="/dashboard">
-                <div className="px-4 py-1.5 lg:py-2 text-white rounded-full w-full bg-primary text-md">
+              <Link
+                to={
+                  role?.role === "admin"
+                    ? "/dashboard/admin/events"
+                    : "/dashboard/profile"
+                }
+              >
+                <div className="px-4 py-1.5 lg:py-2 text-white rounded-full w-full bg-primary text-md flex justify-center">
                   Dashboard
                 </div>
               </Link>
-              <Button
+              <button
                 onClick={() => {
                   handleLogout();
                 }}
-                className="px-4 py-1.5 lg:py-2 w-full text-white rounded-full bg-tertiary text-md"
+                className="px-4 py-1.5 lg:py-2 w-full text-white rounded-full bg-tertiary text-md cursor-pointer"
               >
                 Logout
-              </Button>
+              </button>
             </div>
-          </Button>
+          </div>
         ) : (
           <div className="flex gap-3">
             <Link to="/register">

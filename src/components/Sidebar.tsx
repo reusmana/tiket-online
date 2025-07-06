@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { cn } from "../lib/utils";
 
-const Sidebar: React.FC = () => {
+type sidebarProps = {
+  router: { path: string; name: string }[];
+};
+const Sidebar: React.FC<sidebarProps> = ({ router }) => {
   return (
     <div
       className={cn(
@@ -9,61 +12,20 @@ const Sidebar: React.FC = () => {
       )}
     >
       <ul className="flex flex-col px-4 py-6 sidebar">
-        <li
-          className={cn(
-            "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
-            location.pathname === "/dashboard" &&
-              "border-primary bg-slate-900 border-l-4 text-white"
-          )}
-        >
-          <Link to="/dashboard" className="ml-2 text-3xl font-bold ">
-            Dashboard
-          </Link>
-        </li>
-        <li
-          className={cn(
-            "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
-            location.pathname === "/dashboard/events" &&
-              "border-primary bg-slate-900 border-l-4 text-white"
-          )}
-        >
-          <Link to="/dashboard/events" className="ml-2 text-xl font-bold ">
-            Event
-          </Link>
-        </li>
-        <li
-          className={cn(
-            "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
-            location.pathname === "/dashboard/users" &&
-              "border-primary bg-slate-900 border-l-4 text-white"
-          )}
-        >
-          <Link to="/dashboard/users" className="ml-2 text-xl font-bold ">
-            Users
-          </Link>
-        </li>
-        <li
-          className={cn(
-            "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
-            location.pathname === "/dashboard/riwayat" &&
-              "border-primary bg-slate-900 border-l-4 text-white"
-          )}
-        >
-          <Link to="/dashboard/riwayat" className="ml-2 text-xl font-bold ">
-            Riwayat
-          </Link>
-        </li>
-        <li
-          className={cn(
-            "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
-            location.pathname === "/dashboard/profile" &&
-              "border-primary bg-slate-900 border-l-4 text-white"
-          )}
-        >
-          <Link to="/dashboard/profile" className="ml-2 text-xl font-bold ">
-            Update Profile
-          </Link>
-        </li>
+        {router.map((item, index) => (
+          <li
+            key={index}
+            className={cn(
+              "flex items-start justify-start  border-slate-100 py-2 rounded-lg text-secondary",
+              location.pathname === item.path &&
+                "border-primary bg-slate-900 border-l-4 text-white"
+            )}
+          >
+            <Link to={item.path} className="ml-2 text-xl font-bold ">
+              {item.name}
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );

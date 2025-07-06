@@ -21,7 +21,7 @@ const Button: React.FC<{
       onClick={onClick}
       type={type}
       disabled={disabled}
-      className={cn("w-full text-white rounded-lg bg-slate-400", className)}
+      className={cn("w-full text-white rounded-lg bg-primary", className)}
     >
       {children}
     </button>

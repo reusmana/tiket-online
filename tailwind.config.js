@@ -9,6 +9,15 @@ export default {
         tertiary: "#161616",
         "blue-primary": "#0266D6",
       },
+      keyframes: {
+        shimmer: {
+          "0%": { backgroundPosition: "-500px 0" },
+          "100%": { backgroundPosition: "500px 0" },
+        },
+      },
+      animation: {
+        shimmer: "shimmer 2s infinite linear",
+      },
     },
   },
   plugins: [],

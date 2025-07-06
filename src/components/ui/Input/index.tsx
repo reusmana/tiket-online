@@ -11,17 +11,31 @@ const Input: React.FC<{
     | "file"
     | "date"
     | "time"
-    | "number";
+    | "number"
+    | "datetime-local";
   name: string;
   placeholder?: string;
   id: string;
-}> = ({ className, type = "text", placeholder, name, id, ...props }) => {
+  value?: any;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({
+  className,
+  type = "text",
+  placeholder,
+  name,
+  id,
+  value,
+  onChange,
+  ...props
+}) => {
   return (
     <input
       type={type}
       name={name}
       id={id}
       placeholder={placeholder}
+      onChange={onChange}
+      value={value}
       {...props}
       className={cn(
         "w-full border rounded-lg focus:outline-none focus:border-slate-400",

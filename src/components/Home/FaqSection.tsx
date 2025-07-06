@@ -37,7 +37,7 @@ const FaqSection = () => {
           FAQ
         </h1>
         {faqs.map((faq, index) => (
-          <div className="flex flex-col w-full group">
+          <div className="flex flex-col w-full group" key={index}>
             <div
               className="flex items-center justify-between py-4 cursor-pointer"
               onClick={() => toggleFAQ(index)}

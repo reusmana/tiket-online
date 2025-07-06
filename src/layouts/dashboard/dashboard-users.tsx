@@ -5,7 +5,7 @@ import NavbarDashboard from "../../components/Dashboard/Navbar";
 import DrawerDashboard from "../../components/Dashboard/Drawer";
 import { getCookies } from "../../lib/cookie";
 
-const Dashboard = () => {
+const DashboardUsers = () => {
   const navigate = useNavigate();
   const authorization = getCookies("accessToken");
   const location = useLocation();
@@ -17,8 +17,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log(location);
-    if (authorization === undefined) {
+    const role = localStorage.getItem("users");
+    const data = JSON.parse(role as string);
+    if (authorization === undefined || data.role !== "user") {
       navigate("/login", { replace: true });
     } else {
       setIsAuthorizedChecked(true);
@@ -28,6 +29,17 @@ const Dashboard = () => {
   if (!isAuthorizedChecked) {
     return null;
   }
+
+  const routerUsersDashboard = [
+    {
+      path: "/dashboard/orders",
+      name: "Order",
+    },
+    {
+      path: "/dashboard/profile",
+      name: "Profile",
+    },
+  ];
   return (
     <Suspense
       fallback={
@@ -38,9 +50,13 @@ const Dashboard = () => {
     >
       <div className="relative flex flex-col w-full h-full min-h-screen bg-[#F5F5F5]">
         <NavbarDashboard onClick={handleOpen} />
-        <DrawerDashboard open={open} handleOpen={handleOpen} />
+        <DrawerDashboard
+          router={routerUsersDashboard}
+          open={open}
+          handleOpen={handleOpen}
+        />
         <div className="flex w-full overflow-hidden h-[calc(100vh-80px)]">
-          <Sidebar />
+          <Sidebar router={routerUsersDashboard} />
           <section className=" flex flex-col w-full p-4 h-[calc(100vh-80px)] overflow-scroll transition-all duration-1000 ease-in-out bg-white">
             <div className="flex flex-col items-start justify-start">
               <Outlet />
@@ -52,4 +68,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardUsers;
