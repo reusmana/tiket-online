@@ -3,6 +3,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import type { OrderList } from "../../../interfaces/order";
 import fetchApi from "../../../lib/fetch-api";
 import type { EventList } from "../../../interfaces/event-admin";
+import type { UserListAdmin } from "../../../interfaces/users";
 
 type ViewTiketProps = {
   id: number;
@@ -12,9 +13,13 @@ type ViewTiketProps = {
 const ViewTiket: React.FC<ViewTiketProps> = ({ id, closed }) => {
   const [data, setData] = useState<OrderList>();
   const [dataEvent, setDataEvent] = useState<EventList>();
+  const [profile, setProfile] = useState<UserListAdmin>();
   useEffect(() => {
     const getDetails = async () => {
       try {
+        const prof = localStorage.getItem("users");
+        const profile = JSON.parse(prof!);
+        setProfile(profile);
         const url = `orders/${id}`;
         const response = (await fetchApi.get(url)) as any;
 
@@ -47,7 +52,14 @@ const ViewTiket: React.FC<ViewTiketProps> = ({ id, closed }) => {
             <tr>
               <td>Total Price</td>
               <td className="w-5">:</td>
-              <td>{(data?.total_price ?? 0).toLocaleString("id-ID")} </td>
+              <td>
+                Rp. {parseInt(data?.total_price ?? "0").toLocaleString("id-ID")}{" "}
+              </td>
+            </tr>
+            <tr>
+              <td>Nama Pemesan</td>
+              <td className="w-5">:</td>
+              <td>{profile?.name}</td>
             </tr>
             <tr>
               <td>Tanggal</td>
