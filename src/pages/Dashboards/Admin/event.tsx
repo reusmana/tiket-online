@@ -74,9 +74,9 @@ const EventAdmin = () => {
             <th className="w-32 py-4 text-lg border">Poster</th>
             <th className="w-64 py-4 text-lg border">Name</th>
             <th className="w-32 py-4 text-lg border">City</th>
-            <th className="w-32 py-4 text-lg border">Venue</th>
-            <th className="w-32 py-4 text-lg border">Location</th>
-            <th className="w-32 py-4 text-lg border">Action</th>
+            <th className="w-48 py-4 text-lg border">Venue</th>
+            <th className="w-64 py-4 text-lg border">Location</th>
+            <th className="w-64 py-4 text-lg border">Action</th>
           </tr>
         </thead>
         <tbody>

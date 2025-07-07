@@ -95,7 +95,7 @@ const ViewPayment: React.FC<{
         <div className="flex justify-center py-5">
           <img src={urlPath(qUrls)} alt="" className="w-full" />
         </div>
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid gap-2 lg:gap-5 lg:grid-cols-2">
           <button
             className=" bg-green-500 text-white px-4 py-1.5 lg:py-3 rounded-full mx-auto w-full"
             onClick={() => handleApproved("approved")}

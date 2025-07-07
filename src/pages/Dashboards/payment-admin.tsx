@@ -54,7 +54,7 @@ const PaymentAdmin = () => {
         <thead>
           <tr className="w-full border">
             <th className="w-10 py-4 text-lg border">No</th>
-            <th className="w-64 py-4 text-lg border">Order ID</th>
+            <th className="w-32 py-4 text-lg border">Order ID</th>
             <th className="w-32 py-4 text-lg border">Method</th>
             <th className="w-32 py-4 text-lg border">Amount</th>
             <th className="w-32 py-4 text-lg border">Status</th>

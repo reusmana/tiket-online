@@ -49,10 +49,10 @@ const RiwayatAdmin = () => {
         <thead>
           <tr className="w-full border">
             <th className="w-10 py-4 text-lg border">No</th>
-            <th className="w-64 py-4 text-lg border">EventID</th>
+            <th className="w-32 py-4 text-lg border">EventID</th>
             <th className="w-32 py-4 text-lg border">User ID</th>
             <th className="w-32 py-4 text-lg border">Quantity</th>
-            <th className="w-32 py-4 text-lg border">Total Price</th>
+            <th className="w-64 py-4 text-lg border">Total Price</th>
             <th className="w-32 py-4 text-lg border">Status</th>
             <th className="w-32 py-4 text-lg border">Action</th>
           </tr>
@@ -60,14 +60,14 @@ const RiwayatAdmin = () => {
         <tbody>
           {data.map((item, index) => (
             <tr className="border" key={index}>
-              <td className="py-2 text-center border">{index + 1}</td>
-              <td className="py-2 text-center border">{item.event_id}</td>
-              <td className="py-2 text-center border">{item.user_id}</td>
-              <td className="py-2 text-center border">{item.quantity}</td>
-              <td className="py-2 text-center border">
+              <td className="px-2 py-2 text-center border">{index + 1}</td>
+              <td className="px-2 py-2 text-center border">{item.event_id}</td>
+              <td className="px-2 py-2 text-center border">{item.user_id}</td>
+              <td className="px-2 py-2 text-center border">{item.quantity}</td>
+              <td className="px-2 py-2 text-right border">
                 Rp. {parseInt(item.total_price).toLocaleString("en-US")}
               </td>
-              <td className="py-2 text-center border">
+              <td className="px-2 py-2 text-center border">
                 {item.status === "pending" && (
                   <span className="px-4 py-1 text-sm text-white bg-yellow-500 rounded-full">
                     Pending
@@ -84,7 +84,7 @@ const RiwayatAdmin = () => {
                   </span>
                 )}
               </td>
-              <td className="py-2 text-center border">
+              <td className="px-2 py-2 text-center border">
                 <span
                   className="px-4 py-1 text-sm text-white bg-green-500 rounded-full cursor-pointer"
                   onClick={() => setOpenView({ id: item.id, open: true })}

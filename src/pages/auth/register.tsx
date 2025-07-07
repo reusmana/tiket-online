@@ -161,7 +161,7 @@ const Register = () => {
         </span>
       </div>
       <div className="absolute flex flex-col gap-2 lg:gap-10 lg:flex-row bottom-2 left-2 lg:bottom-10 lg:left-10">
-        <span>© 2025 yourapp.com</span>
+        <span>© {new Date().getFullYear()} yourapp.com</span>
         <span className="underline cursor-pointer text-blue-primary">
           Contact Us
         </span>

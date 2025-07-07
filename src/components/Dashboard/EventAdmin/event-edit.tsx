@@ -234,7 +234,7 @@ const EventEdit: React.FC<EventCreateProps> = ({ id, close }) => {
               type="date"
               value={
                 dataEvent?.event_date
-                  ? new Date(dataEvent?.event_date).toISOString().slice(0, 16)
+                  ? new Date(dataEvent?.event_date).toISOString().slice(0, 10)
                   : ""
               }
               onChange={(e) => handleChangeValue("event_date", e.target.value)}

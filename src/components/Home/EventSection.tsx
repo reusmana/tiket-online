@@ -17,7 +17,7 @@ const EventSection = () => {
             new Date(item.event_date).toISOString().slice(0, 10) >=
             new Date().toISOString().slice(0, 10)
         );
-        setEventData(filters);
+        setEventData(filters.slice(0, 3));
       } catch (error) {
         console.error(error);
       }

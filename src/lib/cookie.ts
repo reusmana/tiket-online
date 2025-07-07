@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 export const setCookies = (key: string, value: string) => {
-  Cookies.set(key, value, { expires: 30 });
+  const oneHourFromNow = new Date(new Date().getTime() + 60 * 60 * 1000);
+  Cookies.set(key, value, { expires: oneHourFromNow });
   return;
 };
 

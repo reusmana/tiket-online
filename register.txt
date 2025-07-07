@@ -1,0 +1,58 @@
+register,
+login,
+logout,
+profile usser,
+update profile,
+upcoming event,
+Detail event,
+Update event (admin),
+Hapus event (admin),
+Daftar semua event (admin),
+Buat event baru (admin),
+Detail pesanan (admin)
+Batalkan pesanan sebelum bayar (user),
+Buat pesanan tiket(user),
+Daftar pesanan user,
+Opsi metode pembayaran,
+Inisiasi pembayaran dummy,
+Ambil QR code entry event,
+Status & detail pembayaran,
+Kirim e-ticket via email,
+Kirim notifikasi SMS/WA,
+Ubah role user (admin),
+Daftar user (admin),
+Tambah user baru (admin),
+Laporan penjualan per periode (admin),
+Generate QR entry (admin),
+Detail pembayaran (admin),
+Daftar pembayaran (admin),
+Generate QR entry berdasarkan order,
+Daftar order entry (admin)
+
+
+
+login
+register
+logout
+
+users 
+user/update profile
+
+
+payment terbuat, payment pending, payment approve / reject (status)
+approved payment dari ADMIN
+
+
+
+jadi ketika create payment -> call api
+- create orders
+- create /api/payments/initiate 
+- nah itukan udah ada ya URL QR nya, nanti di bawah, tinggal checlist "saya sudah bayar", untuk notif ke admin
+- butuh api baru buat update status di order
+
+
+di dashboard admin, ketika list payment, dan see detail payment, admin butuh api buat approve payment nya
+- update status payment
+
+notification email, ketika  bagian admin approve payment
+

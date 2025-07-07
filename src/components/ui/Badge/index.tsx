@@ -11,7 +11,7 @@ const Badge: React.FC<{
       {...props}
       onClick={onClick}
       className={cn(
-        "px-6 py-1 text-sm rounded-md bg-slate-100 hover:bg-slate-400 text-slate-700 hover:text-white bg-none",
+        "px-6 py-1 text-sm rounded-md bg-slate-400 text-white hover:bg-secondary hover:text-white bg-none",
         className
       )}
     >

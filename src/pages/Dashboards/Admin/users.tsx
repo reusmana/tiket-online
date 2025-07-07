@@ -51,10 +51,10 @@ const UsersAdmin = () => {
         <thead>
           <tr className="w-full border">
             <th className="w-10 py-4 text-lg border">No</th>
-            <th className="w-32 py-4 text-lg border">Name</th>
+            <th className="w-64 py-4 text-lg border">Name</th>
             <th className="w-64 py-4 text-lg border">Email</th>
             <th className="w-32 py-4 text-lg border">Role</th>
-            <th className="w-32 py-4 text-lg border">Action</th>
+            <th className="w-48 py-4 text-lg border">Action</th>
           </tr>
         </thead>
         <tbody>

@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
               Gundil, Kec. Bogor Utara, Kota Bogor
             </span>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63422.35395027188!2d106.79873769822365!3d-6.53467537053275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c142e5b85db9%3A0xfe32de1969287bfb!2sRAMAYANA%20Cibinong!5e0!3m2!1sen!2sid!4v1751582581456!5m2!1sen!2sid"
+              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3963.532088143898!2d106.81461012601721!3d-6.580576893412922!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sJl%20drupada%20V%201%20perumahan%20indraprasta%202%2C%20Rt%2FRw%20%3A%2004%2F13%2C%20Tegal%20Gundil%2C%20Kec.%20Bogor%20Utara%2C%20Kota%20Bogor!5e0!3m2!1sen!2sid!4v1751854498357!5m2!1sen!2sid"
               width="600"
               height="450"
               className="max-w-[468px] w-full rounded-2xl h-[252px]"

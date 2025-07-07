@@ -10,7 +10,7 @@ const Galery = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 card">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-3 card">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
           <div key={index} className="w-full">
             <GaleryCard Image1={Image2}></GaleryCard>

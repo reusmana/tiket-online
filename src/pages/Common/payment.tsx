@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import QRIS from "../../assets/qris.png";
 import MANDIRI from "../../assets/mandiri.png";
 import BRI from "../../assets/bri.png";
@@ -21,17 +21,19 @@ const Payment = () => {
     open: false,
   });
 
+  const dumpPriceRef = useRef<number>(0);
+
   const context = useContext(UserContext);
 
   const increment = () => {
     setAmountTicket(amountTicket + 1);
-    calculatePrice();
+    calculatePrice(amountTicket + 1);
   };
 
   const decrement = () => {
     if (amountTicket === 1) return;
     setAmountTicket(amountTicket - 1);
-    calculatePrice();
+    calculatePrice(amountTicket - 1);
   };
 
   const selectThePayment = (payment: string) => {
@@ -41,10 +43,11 @@ const Payment = () => {
   useEffect(() => {
     const detailEvent = localStorage.getItem("event");
     const data = JSON.parse(detailEvent!);
+    const fax = 2500;
+    dumpPriceRef.current = data.price;
+    const total = amountTicket * parseInt(data.price);
+    setAmountPrice(total + fax);
     setDataDetail(data);
-    setTimeout(() => {
-      calculatePrice();
-    }, 2000);
   }, []);
   const handleOrder = async () => {
     try {
@@ -59,7 +62,7 @@ const Payment = () => {
 
       const payment = await fetchApi.post("/payments/initiate", {
         orderId: order.data.id,
-        amount: 0,
+        amount: amountPrice,
         method: "qris",
       });
 
@@ -76,11 +79,10 @@ const Payment = () => {
     setIsAlreadyPaid(e);
   };
 
-  const calculatePrice = () => {
-    const fax = 2500;
-    const total = amountTicket * parseInt(dataDetail.price);
-
-    setAmountPrice(total + fax);
+  const calculatePrice = (tiket: number) => {
+    console.log(dumpPriceRef.current);
+    const total = tiket * dumpPriceRef.current;
+    setAmountPrice(total + 2500);
   };
 
   if (dataDetail === undefined) {
@@ -91,7 +93,7 @@ const Payment = () => {
     <div className="flex flex-col w-full lg:mt-20">
       {urlQR.open && (
         <div className="fixed inset-0 w-full min-h-screen bg-white z-[99999999] flex justify-center items-center flex-col gap-5">
-          {urlQR.qris}
+          <h1 className="text-2xl font-bold">Lakukan Pembayaran</h1>
           <img src={urlPath(urlQR.qris)} alt="" className="w-72 h-72" />
           <div className="flex items-center justify-center gap-2">
             <input
@@ -202,7 +204,7 @@ const Payment = () => {
                   </Button>
                 </div>
               </div>
-              <div className="flex items-center justify-between mt-10 text-xs">
+              <div className="flex items-center justify-between mt-10 text-md">
                 <h3>Harga</h3>
                 <div className="flex items-center justify-center gap-2">
                   <span>
@@ -211,16 +213,16 @@ const Payment = () => {
                   </span>
                 </div>
               </div>
-              <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center justify-between text-md">
                 <h3>Biaya Langganan</h3>
                 <div className="flex items-center justify-center gap-2">
                   <span>Rp 2.205</span>
                 </div>
               </div>
-              <div className="flex items-center justify-between font-semibold">
+              <div className="flex items-center justify-between text-lg font-semibold">
                 <h3>Total</h3>
                 <div className="flex items-center justify-center gap-2">
-                  <span>Rp {amountPrice}</span>
+                  <span>Rp {amountPrice.toLocaleString("id-ID")}</span>
                 </div>
               </div>
             </div>

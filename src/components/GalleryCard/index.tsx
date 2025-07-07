@@ -11,7 +11,7 @@ const GaleryCard: React.FC<{
     <div
       {...props}
       className={cn(
-        "max-w-[467px] min-h-[400px] w-full rounded-xl overflow-hidden relative",
+        "max-w-[467px] lg:min-h-[400px]  w-full rounded-xl overflow-hidden relative",
         className
       )}
     >
