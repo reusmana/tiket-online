@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-// import image from "../../assets/posters/Poster 1 1.png";
 import type { OrderList } from "../../interfaces/order";
 import fetchApi from "../../lib/fetch-api";
 import Loading from "../../components/Loading";
 import ViewOrder from "../../components/Dashboard/OrdersUsers/ViewOrder";
+import ViewTiket from "../../components/Dashboard/OrdersUsers/ViewTiket";
 
 const Riwayat = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<OrderList[]>([]);
   const [openView, setOpenView] = useState({
+    id: 0,
+    open: false,
+  });
+  const [openTicket, setOpenTicket] = useState({
     id: 0,
     open: false,
   });
@@ -38,12 +42,24 @@ const Riwayat = () => {
     fetchListEvent();
   };
 
+  const handleCloseTicket = () => {
+    setOpenTicket({
+      id: 0,
+      open: false,
+    });
+    fetchListEvent();
+  };
+
   return (
     <div className="flex flex-col pr-6">
       {isLoading && <Loading />}
       {openView.open && (
         <ViewOrder id={openView.id} setOpenView={handleAfterReject} />
       )}
+      {openTicket.open && (
+        <ViewTiket id={openTicket.id} closed={() => handleCloseTicket()} />
+      )}
+
       <h1 className="text-4xl font-bold">Order </h1>
       <table className="w-full mt-10 table-fixed">
         <thead>
@@ -54,7 +70,7 @@ const Riwayat = () => {
             <th className="w-32 py-4 text-lg border">Quantity</th>
             <th className="w-32 py-4 text-lg border">Total Price</th>
             <th className="w-32 py-4 text-lg border">Status</th>
-            <th className="w-32 py-4 text-lg border">Action</th>
+            <th className="w-64 py-4 text-lg border">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -86,10 +102,16 @@ const Riwayat = () => {
               </td>
               <td className="py-2 text-center border">
                 <span
-                  className="px-4 py-1 text-sm text-white bg-green-500 rounded-full cursor-pointer"
+                  className="px-4 py-1 text-sm text-white bg-blue-500 rounded-full cursor-pointer"
+                  onClick={() => setOpenTicket({ id: item.id, open: true })}
+                >
+                  View Ticket
+                </span>
+                <span
+                  className="px-4 py-1 ml-4 text-sm text-white bg-green-500 rounded-full cursor-pointer"
                   onClick={() => setOpenView({ id: item.id, open: true })}
                 >
-                  View
+                  View Detail
                 </span>
               </td>
             </tr>
