@@ -4,13 +4,24 @@ import Button from "../../components/ui/Button";
 import { Link, useNavigate } from "react-router-dom";
 import fetchApi from "../../lib/fetch-api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoEyeClosed, GoEye } from "react-icons/go";
+import { getCookies } from "../../lib/cookie";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [handlePasswordView, setHandlePasswordView] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [isGuestChecked, setIsGuestChecked] = useState(false);
+  const authorization = getCookies("accessToken");
+
+  useEffect(() => {
+    if (authorization === undefined) {
+      setIsGuestChecked(true);
+    } else {
+      navigate(-1);
+    }
+  }, []);
 
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +40,10 @@ const Register = () => {
       console.error(error);
     }
   };
+
+  if (!isGuestChecked) {
+    return;
+  }
   return (
     <section className="flex flex-col items-center justify-center w-full bg-[#F5F5F5] min-h-screen relative px-2">
       <div className="flex flex-col items-center justify-center flex-1 max-w-[400px] mx-auto w-full">

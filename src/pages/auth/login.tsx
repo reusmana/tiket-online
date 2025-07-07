@@ -4,17 +4,27 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import fetchApi from "../../lib/fetch-api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GoEyeClosed, GoEye } from "react-icons/go";
 import { UserContext } from "../../context/user-context";
-import { setCookies } from "../../lib/cookie";
+import { getCookies, setCookies } from "../../lib/cookie";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const context = useContext(UserContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [handlePasswordView, setHandlePasswordView] = useState<boolean>(false);
+  const [isGuestChecked, setIsGuestChecked] = useState(false);
+  const authorization = getCookies("accessToken");
 
-  const context = useContext(UserContext);
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (authorization === undefined) {
+      setIsGuestChecked(true);
+    } else {
+      navigate(-1);
+    }
+  }, []);
+
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -39,6 +49,10 @@ const Login = () => {
       console.error(error);
     }
   };
+
+  if (!isGuestChecked) {
+    return;
+  }
   return (
     <section className="flex flex-col items-center justify-center w-full bg-[#F5F5F5] min-h-screen relative px-2">
       <div className="flex flex-col items-center justify-center flex-1 max-w-[400px] mx-auto w-full">
