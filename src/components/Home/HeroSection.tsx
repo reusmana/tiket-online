@@ -1,6 +1,6 @@
 import React from "react";
 import HeroImage from "../../assets/images/Homepage cover.png";
-import Button from "../ui/Button";
+import { Link } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
   return (
@@ -19,9 +19,12 @@ const HeroSection: React.FC = () => {
             Cerita, Curhat, Doa & Muhasabah bersama <br /> Ustadz Hilman Fauzi.
             Kami hadir lebih dekat dengan Anda. Temukan event kami disini!
           </p>
-          <Button className="px-6 py-2 mt-2 text-lg text-white uppercase bg-transparent border rounded-full border-primary bg-none w-fit bg-primary">
+          <Link
+            to="/register"
+            className="px-6 py-2 mt-2 text-lg text-white uppercase border rounded-full bg-primary border-primary bg-none w-fit"
+          >
             Daftar Sekarang!
-          </Button>
+          </Link>
         </div>
       </span>
     </section>
