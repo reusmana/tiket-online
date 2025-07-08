@@ -12,6 +12,7 @@ const ViewPayment: React.FC<{
 
   const handleApproved = async (ket: string) => {
     try {
+      console.log(ket);
       const url = `/notifications/email`;
       const response = await fetchApi.post(url, {
         to: "reusmana1611@gmail.com",

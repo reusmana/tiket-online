@@ -9,7 +9,7 @@ import Skeleton from "../Skeleton";
 const EventSection = () => {
   const [eventData, setEventData] = useState<EventList[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [getMessageNotFound, setGetMessageNotFound] = useState("");
+  // const [getMessageNotFound, setGetMessageNotFound] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
