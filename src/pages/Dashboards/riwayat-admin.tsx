@@ -73,14 +73,14 @@ const RiwayatAdmin = () => {
                     Pending
                   </span>
                 )}
-                {item.status === "approved" && (
+                {item.status === "paid" && (
                   <span className="px-4 py-1 text-sm text-white bg-green-500 rounded-full">
-                    Approved
+                    Paid
                   </span>
                 )}
-                {item.status === "rejected" && (
+                {item.status === "cancelled" && (
                   <span className="px-4 py-1 text-sm text-white bg-red-500 rounded-full">
-                    Rejected
+                    Cancel
                   </span>
                 )}
               </td>

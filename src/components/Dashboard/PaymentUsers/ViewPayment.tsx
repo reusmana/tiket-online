@@ -12,17 +12,13 @@ const ViewPayment: React.FC<{
 
   const handleApproved = async (ket: string) => {
     try {
-      console.log(ket);
-      const url = `/notifications/email`;
-      const response = await fetchApi.post(url, {
-        to: "reusmana1611@gmail.com",
-        body: "tes",
-        subject: "tes",
+      const url = `/admin/payments/${id}`;
+      await fetchApi.patch(url, {
+        action: ket,
       });
-
-      console.log(response);
-      // setOpenView(false);
+      setOpenView(false);
     } catch (error) {
+      alert("Gagal change status");
       console.error(error);
     }
   };
@@ -99,7 +95,7 @@ const ViewPayment: React.FC<{
         <div className="grid gap-2 lg:gap-5 lg:grid-cols-2">
           <button
             className=" bg-green-500 text-white px-4 py-1.5 lg:py-3 rounded-full mx-auto w-full"
-            onClick={() => handleApproved("approved")}
+            onClick={() => handleApproved("approve")}
           >
             Approve
           </button>
