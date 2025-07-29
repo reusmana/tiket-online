@@ -15,6 +15,8 @@ const UsersAdmin = () => {
   const [searchName, setSearchName] = useState("");
   const [searchEmail, setSearchEmail] = useState("");
   const [searchRole, setSearchRole] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const fetchListEvent = async () => {
     setIsLoading(true);
@@ -41,7 +43,7 @@ const UsersAdmin = () => {
 
   // Filtered Data
   const filteredData = useMemo(() => {
-    return data.filter((item) => {
+    const filtered = data.filter((item) => {
       const globalMatch =
         item.name.toLowerCase().includes(globalSearch.toLowerCase()) ||
         item.email.toLowerCase().includes(globalSearch.toLowerCase()) ||
@@ -59,7 +61,18 @@ const UsersAdmin = () => {
 
       return globalMatch && nameMatch && emailMatch && roleMatch;
     });
-  }, [data, globalSearch, searchName, searchEmail, searchRole]);
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filtered.slice(start, end);
+  }, [
+    data,
+    globalSearch,
+    searchName,
+    searchEmail,
+    searchRole,
+    currentPage,
+    itemsPerPage,
+  ]);
 
   return (
     <div className="flex flex-col pr-6">
@@ -168,6 +181,45 @@ const UsersAdmin = () => {
           ))}
         </tbody>
       </table>
+      <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center gap-4">
+          <p>Showing</p>
+          <select
+            name="change"
+            id=""
+            onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-lg">
+            Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) =>
+                prev < Math.ceil(data.length / itemsPerPage) ? prev + 1 : prev
+              )
+            }
+            disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
+            className="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -19,6 +19,8 @@ const RiwayatAdmin = () => {
   const [searchQuantity, setSearchQuantity] = useState("");
   const [searchTotalPrice, setSearchTotalPrice] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const handleMappingData = (
     orders: OrderList[],
@@ -63,14 +65,26 @@ const RiwayatAdmin = () => {
     fetchListEvent();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [
+    globalSearch,
+    searchId,
+    searchEventName,
+    searchUserName,
+    searchQuantity,
+    searchTotalPrice,
+    searchStatus,
+  ]);
+
   const handleAfterReject = (open: boolean) => {
     setOpenView({ id: 0, open });
     fetchListEvent();
   };
 
   // Filtering logic
-  const filteredData = useMemo(() => {
-    return data.filter((item) => {
+  const paginatedData = useMemo(() => {
+    const filtered = data.filter((item) => {
       const globalMatch =
         item.id.toString().includes(globalSearch) ||
         item.event_name.toLowerCase().includes(globalSearch.toLowerCase()) ||
@@ -100,6 +114,11 @@ const RiwayatAdmin = () => {
         statusMatch
       );
     });
+
+    // Logic pagination
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filtered.slice(start, end);
   }, [
     data,
     globalSearch,
@@ -109,6 +128,8 @@ const RiwayatAdmin = () => {
     searchQuantity,
     searchTotalPrice,
     searchStatus,
+    currentPage,
+    itemsPerPage,
   ]);
 
   return (
@@ -190,7 +211,7 @@ const RiwayatAdmin = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item, index) => (
+          {paginatedData.map((item, index) => (
             <tr className="border" key={index}>
               <td className="px-2 py-2 text-center border">{index + 1}</td>
               <td className="px-2 py-2 text-center border">{item.id}</td>
@@ -231,6 +252,45 @@ const RiwayatAdmin = () => {
           ))}
         </tbody>
       </table>
+      <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center gap-4">
+          <p>Showing</p>
+          <select
+            name="change"
+            id=""
+            onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-lg">
+            Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) =>
+                prev < Math.ceil(data.length / itemsPerPage) ? prev + 1 : prev
+              )
+            }
+            disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
+            className="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
