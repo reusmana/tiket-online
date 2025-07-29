@@ -4,7 +4,7 @@ import { cn } from "../../../lib/utils";
 const Button: React.FC<{
   className?: string;
   type?: "button" | "submit" | "reset";
-  onClick?: () => string | void;
+  onClick?: () => string | void | number;
   children?: React.ReactNode;
   disabled?: boolean;
 }> = ({
